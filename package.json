@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon ./src/index.ts",
+    "start": "tsc && node ./dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +15,7 @@
     "websocket": "^1.0.34"
   },
   "devDependencies": {
-    "@types/websocket": "^1.0.5"
+    "@types/websocket": "^1.0.5",
+    "nodemon": "^2.0.21"
   }
 }

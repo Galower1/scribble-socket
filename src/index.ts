@@ -1,10 +1,12 @@
-import { client } from "websocket";
 import axios from "axios";
+import { socketClient } from "./client-socket";
 
-const BASE_URL = new URL("");
+const BASE_URL = new URL(
+  "https://server3.skribbl.io:5005/socket.io/?EIO=4&transport=polling&t=ORbjojQ"
+);
 
-const USERNAME = "";
-const LOBBY_CODE = "";
+const USERNAME = "Galower";
+const LOBBY_CODE = "pLCfRuBN";
 
 async function retrieveSID() {
   const { data } = await axios.get<string>(BASE_URL.href);
@@ -40,11 +42,25 @@ async function getLobbyData() {
 }
 
 async function main() {
-  const connectionCommands = [retrieveSID, registerSID, confirmSID, joinLobby, getLobbyData];
+  const connectionCommands = [
+    retrieveSID,
+    registerSID,
+    confirmSID,
+    joinLobby,
+    getLobbyData,
+  ];
 
-  for (const command of connectionCommands) {
-    await command();
+  try {
+    for (const command of connectionCommands) {
+      await command();
+    }
+  } catch (error) {
+    console.error("Error while trying to connect:", error);
   }
+
+  BASE_URL.protocol = "wss:";
+
+  socketClient.connect(BASE_URL.href, "echo-protocol");
 }
 
 main();
